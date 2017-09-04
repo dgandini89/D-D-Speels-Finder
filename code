@@ -22,7 +22,7 @@ class MiaApp:
         imb_int_quadro_pulsantix = "2m"
         imb_int_quadro_pulsantiy = "2m"
         
-        # Inizio programma:	                                        Start program
+        # Inizio programma:	                                    Start program
         # self.mioGenitore = genitore                               self.mioGenitore = parent
         # genitore.title("CERCA INCANTESIMI")                       parent.title ("spell search!)
         # Il quadro principale e' mioContenitore                    Main box: mioContenitore
