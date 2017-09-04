@@ -32,7 +32,7 @@ class MiaApp:
         self.mioContenitore.pack(fill=BOTH, expand=NO)
         self.scrollbar = Scrollbar(radice)
         self.scrollbar.pack(side=RIGHT, fill=Y)
-        # Inizio col riquadro che visualizza il testo               Start with box displaying researched
+        # Inizio col riquadro che visualizza il testo               Start with box displaying sought
         # dell'incantesimo ricercato                                spell
 
         #Quadro alto                                                Upper box
