@@ -1,0 +1,153 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from Tkinter import *
+import csv
+import string
+
+class MiaApp:
+    def __init__(self, genitore):
+
+        # Dimensioni e bordi tasti:               Text and edges dimensions
+
+        larghezza_pulsanti = 5                    # keys width
+        altezza_pulsanti = 3                      # keys height
+        altezza_pulsante_esci = 1                 # exit key height
+		
+        imb_tastix = "2m"
+        imb_tastiy = "2m"
+
+        imb_quadro_pulsantix = "1m"
+
+        imb_quadro_pulsantey = "1m"
+        imb_int_quadro_pulsantix = "2m"
+        imb_int_quadro_pulsantiy = "2m"
+        
+        # Inizio programma:	                                        Start program
+        # self.mioGenitore = genitore                               self.mioGenitore = parent
+        # genitore.title("CERCA INCANTESIMI")                       parent.title ("spell search!)
+        # Il quadro principale e' mioContenitore                    Main box: mioContenitore
+        # questo terra' un'orientazione VERTICALE, dall'alto        this land a vertical orientation from above
+        # verso il basso                                            downward
+        self.mioContenitore=Frame(genitore,) #height=40
+        self.mioContenitore.pack(fill=BOTH, expand=NO)
+        self.scrollbar = Scrollbar(radice)
+        self.scrollbar.pack(side=RIGHT, fill=Y)
+        # Inizio col riquadro che visualizza il testo               Start with box displaying researched
+        # dell'incantesimo ricercato                                spell
+
+        #Quadro alto                                                Upper box
+        self.quadro_basso=Frame(self.mioContenitore)
+        self.quadro_basso.pack(side=TOP,fill=BOTH,expand=NO)
+        
+        # Quadro dove immettere testo:                              Text box
+        self.quadro_input=Frame(self.quadro_basso,
+                                bg="white",
+                                relief=RIDGE,
+                                bd=5)
+        self.quadro_input.pack(side=LEFT,
+                               fill=BOTH,
+                               expand=YES)
+                               
+        # Quadro tasto CERCA:                                       SEARCH key box
+        self.quadro_tasto=Frame(self.quadro_basso,
+                                bg="black",
+                                relief=RIDGE,
+                                bd=5,)
+        self.quadro_tasto.pack(side=RIGHT,
+                               expand=NO,
+                               fill=BOTH)
+        
+        # Pulsante cerca                                            SEARCH key
+        self.pulsante_cerca=Button(self.quadro_tasto,
+                                command=self.pulsante2Premuto, cursor="arrow")
+        self.pulsante_cerca.configure(text="Cerca",
+                                bg="black",
+                                fg="white",
+                                height=2,
+                                width=larghezza_pulsanti,
+                                padx=imb_tastix,
+                                pady=imb_tastiy,)
+        self.pulsante_cerca.pack(side=TOP)
+        self.pulsante_cerca.bind("<Return>", self.pulsante2Premuto_b)
+        
+        # Pulsante Esci:                                            EXIT key
+        self.pulsante_esci=Button(self.quadro_tasto,
+                                    command=self.pulsantePremuto)
+        self.pulsante_esci.configure(text="Esci",
+                                    bg="black",
+                                    fg="white",
+                                    height=1,
+                                    width=larghezza_pulsanti,
+                                    padx=imb_tastix,
+                                    #pady=imb_tastiy
+                                    )
+        self.pulsante_esci.pack(side=BOTTOM)
+        self.pulsante_esci.bind("<Return>", self.pulsantePremuto_a)        
+        
+        # Text Input Window
+        self.testo_input = Entry(self.quadro_input, textvariable=var1, cursor="arrow")
+        self.testo_input.pack(fill=BOTH,
+                                expand=YES)
+        self.testo_input.configure(bg="black",
+                                fg="red",
+                                font="Helvetica, 50",
+                                width=1,
+                                insertbackground="white")
+        self.testo_input.focus_force()
+        self.daStampare = Text(radice,wrap=WORD, yscrollcommand=self.scrollbar.set)
+        self.daStampare.configure(bg="black", fg="lime", bd=5,)
+        self.daStampare.pack(fill=BOTH, expand=YES)
+        self.scrollbar.config(command=self.daStampare.yview)
+        self.daStampare.delete(0.0, END) # da commentare se non si vuole tenere tutti gli inca a schermo, bisogna decommentare sel.daStampare.delete nella funzione sotto
+                                         # to comment if you do not want to keep all the spells on screen, you must uncomment "sel.daPrint" in the function below
+   
+    def pulsantePremuto(self):
+        radice.destroy()
+
+    def pulsantePremuto_a(self, event):
+        self.pulsantePremuto()
+        
+    def pulsante2Premuto_b(self, event):
+        self.pulsante2Premuto()
+
+    def pulsante2Premuto(self):
+        file=open("inca.txt", "r")
+        inca=[]
+        incant=""
+        for incant in file:
+            inca.append(incant)
+            continue
+        #print("".join(inca))
+        #print(len(inca))
+        #print(inca[2512])        
+        file2=open("desc.txt", "r")
+        desc =[]
+        cella =""
+        riga=""
+        for string in file2:
+            if string == "\n":
+                desc.append("\n"+cella)
+                cella=""
+            else:
+                cella += ""+string
+                continue
+                
+        var2=str.lower(var1.get())
+        tutto=[]
+        for incantesimo in inca:
+            if var2 in incantesimo:
+                indice=inca.index(incantesimo)
+                tutto.append(str.upper(incantesimo) + desc[indice])
+        #self.daStampare.delete(0.0, END) # da commentare se si vogliono manterere tutti gli incantesimi a schermo e decommentare self.daStampare sopra nel text
+				          # to comment if u want to keep all spells on screen, you must uncomment "self.daStampare" in the function above
+        self.daStampare.insert(0.0, "\n".join(tutto)+"\n")
+        #print("".join(tutto))
+        #print("".join(desc))
+        #print(len(desc))
+        #print(desc[2512])
+
+radice=Tk()
+radice.title("CERCA INCANTESIMI!")
+var1=StringVar()
+miApp=MiaApp(radice)
+radice.mainloop()
